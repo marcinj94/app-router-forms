@@ -51,40 +51,11 @@ export const RegistrationForm = ({
       first: "",
       last: "",
       email: "",
+      zipCode: "",
     },
   });
 
   const formRef = useRef<HTMLFormElement>(null);
-
-  const onSubmit = async (data: z.infer<typeof schema>) => {
-    // client API call
-    // fetch("/api/register", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(data),
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => console.log("data:", data));
-    // v2
-    // const formData = new FormData();
-    // formData.append("first", data.first);
-    // formData.append("last", data.last);
-    // formData.append("email", data.email);
-    // fetch("/api/registerForm", {
-    //   method: "POST",
-    //   body: formData,
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => console.log("data:", data));
-    // console.log(await onDataAction(data));
-    // const formData = new FormData();
-    // formData.append("first", data.first);
-    // formData.append("last", data.last);
-    // formData.append("email", data.email);
-    // console.log(await onFormAction(formData));
-  };
 
   return (
     <Form {...form}>
@@ -135,6 +106,20 @@ export const RegistrationForm = ({
                 <Input placeholder="" {...field} />
               </FormControl>
               <FormDescription>Your email adress.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="zipCode"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Zip-code</FormLabel>
+              <FormControl>
+                <Input placeholder="" {...field} />
+              </FormControl>
+              <FormDescription>Your zip code.</FormDescription>
               <FormMessage />
             </FormItem>
           )}

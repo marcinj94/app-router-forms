@@ -29,8 +29,8 @@ export default function Home() {
   ) => {
     "use server";
     const data = Object.fromEntries(formData);
-    const parsed = schema.safeParse(data);
-    console.log('parsed:',parsed);
+    const parsed = await schema.safeParseAsync(data);
+    console.log("parsed:", parsed);
     if (parsed.success) {
       console.log("tu 1?");
 
