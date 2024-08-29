@@ -19,7 +19,15 @@ import { Input } from "@/components/ui/input";
 // testowanie z poziomu CURLa - błędnego API calla
 // curl -X POST http://localhost:3000/api/register -d "{}" -H "Content-Type: application/json"
 
-export const RegistrationForm = () => {
+export const RegistrationForm = ({
+  onDataAction,
+}: {
+  onDataAction: (data: z.infer<typeof schema>) => Promise<{
+    message: string;
+    user?: z.infer<typeof schema>;
+    issues?: string[];
+  }>;
+}) => {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -31,15 +39,28 @@ export const RegistrationForm = () => {
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
     // client API call
-    fetch("/api/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((data) => console.log("data:", data));
+    // fetch("/api/register", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(data),
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => console.log("data:", data));
+
+    // v2
+    // const formData = new FormData();
+    // formData.append("first", data.first);
+    // formData.append("last", data.last);
+    // formData.append("email", data.email);
+    // fetch("/api/registerForm", {
+    //   method: "POST",
+    //   body: formData,
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => console.log("data:", data));
+    console.log(await onDataAction(data));
   };
 
   return (
