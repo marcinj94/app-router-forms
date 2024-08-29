@@ -1,3 +1,8 @@
+Tutorial how to handle forms with NextJS 14 + react-hook-form Client AND server validations with server actions.
+
+- https://www.youtube.com/watch?v=VLk45JBe8L8
+- https://www.pronextjs.dev/tutorials/forms-management-with-next-js-app-router
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
