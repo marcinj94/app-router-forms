@@ -17,41 +17,25 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useFormState } from "react-dom";
 import { useRef } from "react";
+import { FormState, onSubmitAction } from "./formSubmit";
 
 // testowanie z poziomu CURLa - błędnego API calla
 // curl -X POST http://localhost:3000/api/register -d "{}" -H "Content-Type: application/json"
 
-export const RegistrationForm = ({
-  onDataAction,
-  onFormAction,
-}: {
-  onDataAction: (data: z.infer<typeof schema>) => Promise<{
-    message: string;
-    user?: z.infer<typeof schema>;
-    issues?: string[];
-  }>;
-  onFormAction: (
-    prevState: {
-      message: string;
-      user?: z.infer<typeof schema>;
-      issues?: string[];
-    },
-    data: FormData
-  ) => Promise<{
-    message: string;
-    user?: z.infer<typeof schema>;
-    issues?: string[];
-  }>;
-}) => {
-  const [state, action] = useFormState(onFormAction, { message: "" });
+export type FormSchema = z.infer<typeof schema>;
 
-  const form = useForm<z.infer<typeof schema>>({
+export const RegistrationForm = () => {
+  const [state, action] = useFormState(onSubmitAction, {
+    message: "",
+  });
+
+  const form = useForm<FormSchema>({
     resolver: zodResolver(schema),
     defaultValues: {
       first: "",
       last: "",
       email: "",
-      zipCode: "",
+      ...(state?.fields ?? {}),
     },
   });
 
@@ -59,10 +43,25 @@ export const RegistrationForm = ({
 
   return (
     <Form {...form}>
+      {state?.message !== "" && (
+        <div className="text-red-500">{state.message}</div>
+      )}
+      {state?.issues && (
+        <div className="text-red-500">
+          <ul>
+            {state.issues.map((issue) => (
+              <li key={issue} className="flex gap-1">
+                {issue}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <form
         ref={formRef}
         className="space-y-8"
         action={action}
+        // onSubmit={form.handleSubmit(onSubmit)}
         onSubmit={form.handleSubmit(() => formRef?.current?.submit())}
       >
         <div className="flex gap-2">
@@ -106,20 +105,6 @@ export const RegistrationForm = ({
                 <Input placeholder="" {...field} />
               </FormControl>
               <FormDescription>Your email adress.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="zipCode"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Zip-code</FormLabel>
-              <FormControl>
-                <Input placeholder="" {...field} />
-              </FormControl>
-              <FormDescription>Your zip code.</FormDescription>
               <FormMessage />
             </FormItem>
           )}

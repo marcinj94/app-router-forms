@@ -9,9 +9,6 @@ export const schema = z.object({
     message: "Last name is required",
   }),
   email: z.string().trim().email({
-    message: "Last name is required",
-  }),
-  zipCode: z.string().trim().refine(validateZipcode, {
-    message: "Invalid zipcode",
+    message: "Email is required",
   }),
 });
